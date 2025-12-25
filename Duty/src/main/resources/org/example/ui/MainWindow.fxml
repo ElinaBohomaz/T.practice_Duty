@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.MainController"
+            style="-fx-background-color: #fefaf6;">
+
+    <top>
+        <VBox spacing="0">
+            <!-- Заголовок -->
+            <HBox alignment="CENTER"
+                  style="-fx-background-color: linear-gradient(to right, #f0f9f0, #e0f2e1); -fx-padding: 18;">
+                <Label text="📅" style="-fx-font-size: 28px;"/>
+                <Label text="ГРАФІК ЗМІН"
+                       style="-fx-font-size: 24px; -fx-font-weight: 900; -fx-text-fill: #1a5c1f;
+                              -fx-font-family: 'Segoe UI', Arial, sans-serif; -fx-letter-spacing: 1px;
+                              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.03), 2, 0, 0, 1);"/>
+            </HBox>
+
+            <!-- Панель керування -->
+            <HBox spacing="15" alignment="CENTER_LEFT"
+                  style="-fx-background-color: #f4fbf4; -fx-padding: 12 20; -fx-border-color: #c2e6c4; -fx-border-width: 0 0 1 0;">
+
+                <!-- Період -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="📆" style="-fx-font-size: 16px;"/>
+                    <Label text="Період:" style="-fx-text-fill: #1a5c1f; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="monthComboBox" prefWidth="160" promptText="Місяць"/>
+                    <ComboBox fx:id="yearComboBox" prefWidth="120" promptText="Рік"/>
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- Кнопки -->
+                <HBox spacing="8">
+
+                    <!-- Кнопка завантажити -->
+                    <Button text="📥 Завантажити" onAction="#onLoadButtonClick"
+                            style="-fx-background-color: #ffffff; -fx-text-fill: #1a5c1f; -fx-font-weight: bold;
+                                   -fx-padding: 8 16; -fx-background-radius: 8;
+                                   -fx-border-color: #c2e6c4; -fx-border-width: 1.5; -fx-border-radius: 8;
+                                   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.03), 2, 0, 0, 1);"/>
+
+                    <Button text="💾 Зберегти" onAction="#saveSchedule"
+                            style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;
+                                   -fx-padding: 8 16; -fx-background-radius: 8;
+                                   -fx-border-color: #388E3C; -fx-border-width: 1.5; -fx-border-radius: 8;
+                                   -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.3), 4, 0, 0, 2);"/>
+
+                    <Button text="📊 Excel" onAction="#exportToExcel"
+                            style="-fx-background-color: #f0f9f0; -fx-text-fill: #1a5c1f; -fx-font-weight: bold;
+                                   -fx-padding: 8 16; -fx-background-radius: 8;
+                                   -fx-border-color: #c2e6c4; -fx-border-width: 1.5; -fx-border-radius: 8;
+                                   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.03), 2, 0, 0, 1);"/>
+
+                    <Button fx:id="continueButton" text="🔄 Продовжити" onAction="#onContinueButtonClick"
+                            style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;
+                                   -fx-padding: 8 16; -fx-background-radius: 8;
+                                   -fx-border-color: #1976D2; -fx-border-width: 1.5; -fx-border-radius: 8;
+                                   -fx-effect: dropshadow(gaussian, rgba(33,150,243,0.3), 4, 0, 0, 2);"/>
+
+                    <Button text="👥 Працівники" onAction="#openEmployeeCards"
+                            style="-fx-background-color: #e0f2e1; -fx-text-fill: #1a5c1f; -fx-font-weight: bold;
+                                   -fx-padding: 8 16; -fx-background-radius: 8;
+                                   -fx-border-color: #81c784; -fx-border-width: 2; -fx-border-radius: 8;
+                                   -fx-effect: dropshadow(gaussian, rgba(129,199,132,0.3), 4, 0, 0, 2);"/>
+                </HBox>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <TabPane fx:id="mainTabPane" style="-fx-background-color: transparent; -fx-tab-max-height: 40;">
+            <!-- Вкладка графіку -->
+            <Tab text="📅 Графік змін" closable="false">
+                <VBox spacing="12" style="-fx-padding: 20;">
+
+                    <!-- Пошук + фільтри -->
+                    <HBox spacing="12" alignment="CENTER_LEFT"
+                          style="-fx-background-color: #fcfefc; -fx-background-radius: 10;
+                                 -fx-border-color: #c2e6c4; -fx-border-radius: 10;
+                                 -fx-border-width: 1.5; -fx-padding: 15;">
+
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="🔍" style="-fx-font-size: 16px;"/>
+                            <TextField fx:id="searchField" promptText="Пошук співробітника..."
+                                       prefWidth="220"
+                                       style="-fx-background-color: #f4fbf4; -fx-background-radius: 6;
+                                              -fx-border-color: #c2e6c4; -fx-border-radius: 6;
+                                              -fx-border-width: 1.5; -fx-padding: 8 12;"
+                                       onKeyReleased="#filterTable"/>
+                        </HBox>
+
+                        <Separator orientation="VERTICAL"
+                                   style="-fx-padding: 0 15; -fx-background-color: #c2e6c4;"/>
+
+                        <VBox spacing="4">
+                            <Label text="Фільтри:"
+                                   style="-fx-font-weight: bold; -fx-text-fill: #1a5c1f; -fx-font-size: 12px;"/>
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <ComboBox fx:id="departmentComboBox" promptText="Усі підрозділи" prefWidth="220"/>
+                                <ComboBox fx:id="dayFilterComboBox" promptText="Усі дні" prefWidth="120"/>
+                                <ComboBox fx:id="dayStatusComboBox" promptText="Статус" prefWidth="180"/>
+
+                                <Button text="🗑️ Скинути" onAction="#resetFilters"
+                                        style="-fx-background-color: #f0f9f0; -fx-text-fill: #1a5c1f;
+                                               -fx-font-weight: bold; -fx-background-radius: 6;
+                                               -fx-padding: 8 12; -fx-border-color: #c2e6c4;
+                                               -fx-border-radius: 6; -fx-border-width: 1.5;"/>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Таблиця -->
+                    <TableView fx:id="scheduleTableView"
+                               style="-fx-background-color: white; -fx-border-color: #c2e6c4; -fx-border-radius: 10;
+                                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.02), 8, 0, 0, 2);"
+                               VBox.vgrow="ALWAYS"/>
+
+                    <!-- Нижня кнопка -->
+                    <HBox alignment="CENTER" style="-fx-padding: 15 0 0 0;">
+                        <Button text="📅 Вихідні та легенда" onAction="#showWeekendsAndHolidaysInfo"
+                                style="-fx-background-color: #ff9800; -fx-text-fill: white; -fx-font-weight: bold;
+                                       -fx-padding: 8 20; -fx-background-radius: 6;
+                                       -fx-border-color: #ffa726; -fx-border-width: 1; -fx-border-radius: 6;
+                                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <!-- Вкладка працівників -->
+            <Tab fx:id="employeeTab" text="👥 Працівники" closable="false">
+                <VBox spacing="12" style="-fx-padding: 20;">
+
+                    <!-- Панель керування працівниками -->
+                    <HBox spacing="15" alignment="CENTER_LEFT"
+                          style="-fx-background-color: #fcfefc; -fx-background-radius: 10;
+                                 -fx-border-color: #c2e6c4; -fx-border-radius: 10;
+                                 -fx-border-width: 1.5; -fx-padding: 15;">
+
+                        <!-- Пошук працівників -->
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="🔍" style="-fx-font-size: 16px;"/>
+                            <TextField fx:id="employeeSearchField" promptText="Пошук працівника..."
+                                       prefWidth="250"
+                                       style="-fx-background-color: #f4fbf4; -fx-background-radius: 6;
+                                              -fx-border-color: #c2e6c4; -fx-border-radius: 6;
+                                              -fx-border-width: 1.5; -fx-padding: 8 12;"/>
+                        </HBox>
+
+                        <Separator orientation="VERTICAL"
+                                   style="-fx-padding: 0 15; -fx-background-color: #c2e6c4;"/>
+
+                        <!-- Фільтри працівників -->
+                        <VBox spacing="4">
+                            <Label text="Фільтри працівників:"
+                                   style="-fx-font-weight: bold; -fx-text-fill: #1a5c1f; -fx-font-size: 12px;"/>
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <ComboBox fx:id="employeeDepartmentFilter" promptText="Всі підрозділи" prefWidth="180"/>
+                                <ComboBox fx:id="employeeStatusFilter" promptText="Всі статуси" prefWidth="150"/>
+                            </HBox>
+                        </VBox>
+
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <!-- Кнопки керування працівниками -->
+                        <HBox spacing="8">
+                            <Button text="➕ Додати" onAction="#addEmployee"
+                                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;
+                                           -fx-padding: 8 16; -fx-background-radius: 8;"/>
+
+                            <Button text="✏️ Редагувати" onAction="#editEmployee"
+                                    style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;
+                                           -fx-padding: 8 16; -fx-background-radius: 8;"/>
+
+                            <Button text="🗑️ Видалити" onAction="#deleteEmployee"
+                                    style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-weight: bold;
+                                           -fx-padding: 8 16; -fx-background-radius: 8;"/>
+
+                            <Button text="🔄 Оновити" onAction="#refreshEmployees"
+                                    style="-fx-background-color: #607D8B; -fx-text-fill: white; -fx-font-weight: bold;
+                                           -fx-padding: 8 16; -fx-background-radius: 8;"/>
+                        </HBox>
+                    </HBox>
+
+                    <!-- Таблиця працівників -->
+                    <TableView fx:id="employeeTableView"
+                               style="-fx-background-color: white; -fx-border-color: #c2e6c4; -fx-border-radius: 10;
+                                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.02), 8, 0, 0, 2);"
+                               VBox.vgrow="ALWAYS"/>
+
+                    <!-- Статус працівників -->
+                    <HBox alignment="CENTER_LEFT" style="-fx-padding: 10 0 0 0;">
+                        <Label fx:id="employeeStatusLabel" text="Завантаження..."
+                               style="-fx-text-fill: #1a5c1f; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_LEFT"
+              style="-fx-background-color: #f4fbf4; -fx-padding: 10 20; -fx-border-color: #c2e6c4; -fx-border-width: 1 0 0 0;">
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="📊" style="-fx-font-size: 16px;"/>
+                <Label fx:id="statusLabel" text="Система готова до роботи"
+                       style="-fx-text-fill: #1a5c1f; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label text="💧 Полтававодоканал • Версія 1.0"
+                   style="-fx-text-fill: #81c784; -fx-font-size: 11px;"/>
+        </HBox>
+    </bottom>
+</BorderPane>

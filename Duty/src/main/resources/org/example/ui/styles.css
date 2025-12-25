@@ -1,0 +1,92 @@
+/* Стилі для TableView */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #c2e6c4;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.02), 8, 0, 0, 2);
+}
+
+.table-view .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+}
+
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: #f4fbf4;
+    -fx-background-radius: 8;
+    -fx-pref-height: 15px;
+}
+
+.table-view .scroll-bar:horizontal .thumb {
+    -fx-background-color: #81c784;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+.table-view .scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #66bb6a;
+}
+
+.table-view .scroll-bar .track {
+    -fx-background-color: #e8f5e9;
+    -fx-background-radius: 8;
+}
+
+.table-view .scroll-bar .increment-button,
+.table-view .scroll-bar .decrement-button {
+    -fx-background-color: #e8f5e9;
+    -fx-background-radius: 8;
+    -fx-padding: 2px;
+}
+
+.table-view .scroll-bar .increment-arrow,
+.table-view .scroll-bar .decrement-arrow {
+    -fx-background-color: #388e3c;
+    -fx-shape: "M 0 0 L 4 4 L 8 0 Z";
+    -fx-padding: 2px;
+}
+
+.table-view .scroll-bar:horizontal .increment-arrow {
+    -fx-rotate: 90;
+}
+
+.table-view .scroll-bar:horizontal .decrement-arrow {
+    -fx-rotate: 270;
+}
+
+/* Стилі для заголовків таблиці */
+.table-view .column-header {
+    -fx-background-color: #e8f5e9;
+    -fx-border-color: #c8e6c9;
+    -fx-border-width: 0 1 1 0;
+    -fx-font-weight: bold;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #1a5c1f;
+}
+
+/* Стилі для комірок таблиці */
+.table-view .table-cell {
+    -fx-padding: 5 10;
+    -fx-border-color: #e8f5e9;
+    -fx-border-width: 0 1 1 0;
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: #fcfefc;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f4fbf4;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: #e0f2e1;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #bbdefb;
+    -fx-text-fill: #0d47a1;
+}
